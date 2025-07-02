@@ -1,0 +1,30 @@
+name: Generate Index
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.html'
+      - '.github/workflows/generate-index.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Generate index.html
+        run: bash generate-index.sh
+
+      - name: Commit and push index.html
+        run: |
+          git add index.html
+          git commit -m "Auto-update index.html"
+          git push
